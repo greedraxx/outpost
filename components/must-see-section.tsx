@@ -1,29 +1,28 @@
 import Image from "next/image"
 
-export function MustSeeSection() {
-  const articles = [
-    {
-      image: "/red-theater-curtains-stage.jpg",
-      tags: ["Exhibitions", "Recommendations", "Art"],
-      title: "Unmissable Shows This Season: Our recommendations",
-      excerpt:
-        "Get ready for an unforgettable cultural experience with our handpicked list of shows you can't afford to miss this season.",
-    },
-    {
-      image: "/black-and-white-architecture-geometric.jpg",
-      tags: ["Architecture", "Hidden", "Art"],
-      title: "Hidden Gems: Lesser-Known Exhibits Worth Exploring",
-      excerpt:
-        "Discover the beauty of art at its basest path with our guide to hidden gems that offer a world of exhibitions.",
-    },
-    {
-      image: "/spiral-staircase-architecture-black-and-white.jpg",
-      tags: ["Design", "Art", "Inspiration"],
-      title: "Design Diaries: Where to Find Inspiration",
-      excerpt:
-        "From sculptural forms in urban spaces to architectural marvels and timeless art, discover where designers, artists turn for ideas.",
-    },
-  ]
+interface Article {
+  id: string
+  title: string
+  excerpt: string
+  tags: string[]
+  featured_image?: string
+}
+
+interface MustSeeSectionProps {
+  articles: Article[]
+}
+
+export function MustSeeSection({ articles: allArticles }: MustSeeSectionProps) {
+  const articles = allArticles.slice(3, 6).map(article => ({
+    image: article.featured_image || "/red-theater-curtains-stage.jpg",
+    tags: article.tags.slice(0, 3),
+    title: article.title,
+    excerpt: article.excerpt,
+  }))
+
+  if (articles.length === 0) {
+    return null
+  }
 
   return (
     <section className="bg-background py-20">

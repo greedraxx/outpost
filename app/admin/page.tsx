@@ -8,7 +8,8 @@ import { BlogFooter } from "@/components/blog-footer"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { FileText, Mic, Users, TrendingUp, Eye, Heart, MessageSquare, MoreVertical, LogOut } from "lucide-react"
+import { FileText, Mic, Users, TrendingUp, Eye, Heart, MessageSquare, MoreVertical, LogOut, Plus } from "lucide-react"
+import { useRouter as useNextRouter } from "next/navigation"
 
 export default function AdminPage() {
   const router = useRouter()
@@ -37,6 +38,37 @@ export default function AdminPage() {
     router.push("/login")
   }
 
+  const [articles, setArticles] = useState<any[]>([])
+  const [podcasts, setPodcasts] = useState<any[]>([])
+
+  useEffect(() => {
+    const loadData = async () => {
+      const supabase = createClient()
+      
+      // Articles 가져오기
+      const { data: articlesData } = await supabase
+        .from('articles')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(5)
+      
+      if (articlesData) setArticles(articlesData)
+
+      // Podcasts 가져오기
+      const { data: podcastsData } = await supabase
+        .from('podcasts')
+        .select('*')
+        .order('episode_number', { ascending: false })
+        .limit(3)
+      
+      if (podcastsData) setPodcasts(podcastsData)
+    }
+
+    if (!isLoading) {
+      loadData()
+    }
+  }, [isLoading])
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -47,78 +79,21 @@ export default function AdminPage() {
       </div>
     )
   }
+
   const stats = [
-    { label: "Total Articles", value: "156", icon: FileText, change: "+12 this month" },
-    { label: "Podcast Episodes", value: "48", icon: Mic, change: "+4 this month" },
+    { label: "Total Articles", value: articles.length.toString(), icon: FileText, change: "Recent" },
+    { label: "Podcast Episodes", value: podcasts.length.toString(), icon: Mic, change: "Episodes" },
     { label: "Total Readers", value: "24.5K", icon: Users, change: "+2.3K this month" },
     { label: "Engagement Rate", value: "68%", icon: TrendingUp, change: "+5% this month" },
   ]
 
-  const recentArticles = [
-    {
-      title: "The Future of Large Language Models",
-      category: "AI Research",
-      status: "Published",
-      views: "2.5K",
-      likes: "342",
-      comments: "28",
-      date: "March 20, 2024",
-    },
-    {
-      title: "Deep Learning Architectures Explained",
-      category: "Machine Learning",
-      status: "Published",
-      views: "1.8K",
-      likes: "256",
-      comments: "19",
-      date: "March 18, 2024",
-    },
-    {
-      title: "Creating Art with AI: A New Era",
-      category: "Generative AI",
-      status: "Draft",
-      views: "-",
-      likes: "-",
-      comments: "-",
-      date: "March 22, 2024",
-    },
-    {
-      title: "AI Regulation: What You Need to Know",
-      category: "Ethics & Policy",
-      status: "Published",
-      views: "3.1K",
-      likes: "428",
-      comments: "45",
-      date: "March 12, 2024",
-    },
-  ]
-
-  const recentPodcasts = [
-    {
-      title: "The Future of AI: Conversations with Leading Researchers",
-      episode: "01",
-      status: "Published",
-      plays: "2.5K",
-      duration: "45:32",
-      date: "March 20, 2024",
-    },
-    {
-      title: "Machine Learning in Practice: Real-World Applications",
-      episode: "02",
-      status: "Published",
-      plays: "2.1K",
-      duration: "38:15",
-      date: "March 13, 2024",
-    },
-    {
-      title: "Ethics in AI: Building Responsible Technology",
-      episode: "03",
-      status: "Scheduled",
-      plays: "-",
-      duration: "52:08",
-      date: "March 27, 2024",
-    },
-  ]
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric' 
+    })
+  }
 
   return (
     <div className="min-h-screen">
@@ -137,13 +112,17 @@ export default function AdminPage() {
             </div>
             <div className="flex gap-3">
               <Button
+                onClick={() => router.push("/admin/articles/new")}
                 variant="outline"
                 className="border-accent text-accent hover:bg-accent hover:text-white bg-transparent"
               >
                 <FileText className="w-4 h-4 mr-2" />
                 New Article
               </Button>
-              <Button className="bg-accent hover:bg-accent/90 text-white">
+              <Button 
+                onClick={() => router.push("/admin/podcasts/new")}
+                className="bg-accent hover:bg-accent/90 text-white"
+              >
                 <Mic className="w-4 h-4 mr-2" />
                 New Episode
               </Button>
@@ -196,51 +175,61 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {recentArticles.map((article, index) => (
-                      <tr key={index} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
-                        <td className="p-4">
-                          <div className="font-medium text-sm max-w-[300px] text-balance">{article.title}</div>
-                        </td>
-                        <td className="p-4">
-                          <Badge variant="secondary" className="text-xs">
-                            {article.category}
-                          </Badge>
-                        </td>
-                        <td className="p-4">
-                          <Badge
-                            className={
-                              article.status === "Published"
-                                ? "bg-green-500/10 text-green-600 hover:bg-green-500/10"
-                                : "bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/10"
-                            }
-                          >
-                            {article.status}
-                          </Badge>
-                        </td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <Eye className="w-3 h-3" />
-                              <span>{article.views}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Heart className="w-3 h-3" />
-                              <span>{article.likes}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <MessageSquare className="w-3 h-3" />
-                              <span>{article.comments}</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="p-4 text-sm text-muted-foreground">{article.date}</td>
-                        <td className="p-4">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreVertical className="w-4 h-4" />
-                          </Button>
+                    {articles.length === 0 ? (
+                      <tr>
+                        <td colSpan={6} className="p-8 text-center text-muted-foreground">
+                          No articles yet. Click "New Article" to create one.
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      articles.map((article) => (
+                        <tr key={article.id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
+                          <td className="p-4">
+                            <div className="font-medium text-sm max-w-[300px] text-balance">{article.title}</div>
+                          </td>
+                          <td className="p-4">
+                            <Badge variant="secondary" className="text-xs">
+                              {article.category}
+                            </Badge>
+                          </td>
+                          <td className="p-4">
+                            <Badge
+                              className={
+                                article.status === "published"
+                                  ? "bg-green-500/10 text-green-600 hover:bg-green-500/10"
+                                  : "bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/10"
+                              }
+                            >
+                              {article.status}
+                            </Badge>
+                          </td>
+                          <td className="p-4">
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <Eye className="w-3 h-3" />
+                                <span>{article.views}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Heart className="w-3 h-3" />
+                                <span>{article.likes}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <MessageSquare className="w-3 h-3" />
+                                <span>0</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="p-4 text-sm text-muted-foreground">
+                            {formatDate(article.created_at)}
+                          </td>
+                          <td className="p-4">
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                              <MoreVertical className="w-4 h-4" />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -270,35 +259,47 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {recentPodcasts.map((podcast, index) => (
-                      <tr key={index} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
-                        <td className="p-4">
-                          <span className="font-bold text-accent">#{podcast.episode}</span>
-                        </td>
-                        <td className="p-4">
-                          <div className="font-medium text-sm max-w-[300px] text-balance">{podcast.title}</div>
-                        </td>
-                        <td className="p-4">
-                          <Badge
-                            className={
-                              podcast.status === "Published"
-                                ? "bg-green-500/10 text-green-600 hover:bg-green-500/10"
-                                : "bg-blue-500/10 text-blue-600 hover:bg-blue-500/10"
-                            }
-                          >
-                            {podcast.status}
-                          </Badge>
-                        </td>
-                        <td className="p-4 text-sm text-muted-foreground">{podcast.plays}</td>
-                        <td className="p-4 text-sm text-muted-foreground">{podcast.duration}</td>
-                        <td className="p-4 text-sm text-muted-foreground">{podcast.date}</td>
-                        <td className="p-4">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreVertical className="w-4 h-4" />
-                          </Button>
+                    {podcasts.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="p-8 text-center text-muted-foreground">
+                          No podcasts yet. Click "New Episode" to create one.
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      podcasts.map((podcast) => (
+                        <tr key={podcast.id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
+                          <td className="p-4">
+                            <span className="font-bold text-accent">#{String(podcast.episode_number).padStart(2, '0')}</span>
+                          </td>
+                          <td className="p-4">
+                            <div className="font-medium text-sm max-w-[300px] text-balance">{podcast.title}</div>
+                          </td>
+                          <td className="p-4">
+                            <Badge
+                              className={
+                                podcast.status === "published"
+                                  ? "bg-green-500/10 text-green-600 hover:bg-green-500/10"
+                                  : podcast.status === "scheduled"
+                                  ? "bg-blue-500/10 text-blue-600 hover:bg-blue-500/10"
+                                  : "bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/10"
+                              }
+                            >
+                              {podcast.status}
+                            </Badge>
+                          </td>
+                          <td className="p-4 text-sm text-muted-foreground">{podcast.plays}</td>
+                          <td className="p-4 text-sm text-muted-foreground">{podcast.duration}</td>
+                          <td className="p-4 text-sm text-muted-foreground">
+                            {formatDate(podcast.created_at)}
+                          </td>
+                          <td className="p-4">
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                              <MoreVertical className="w-4 h-4" />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>

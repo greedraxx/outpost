@@ -1,26 +1,38 @@
 import Image from "next/image"
 
-export function SpotlightSection() {
-  const articles = [
-    {
-      image: "/black-and-white-artist.png",
-      date: "September 10, 2024",
-      category: "Music",
-      tags: ["Music", "City", "Personality"],
-      title: "Soundscapes of the City: An Interview with Leo Hart",
-      excerpt:
-        "Explore the world of sound artist Leo Hart, who transforms urban noise into captivating musical compositions.",
-    },
-    {
-      image: "/painter-artist-studio-window.jpg",
-      date: "November 7, 2024",
-      category: "Interviews",
-      tags: ["Personality", "Art", "Artist"],
-      title: "Eva Martinez. The Visionary Behind the Canvas",
-      excerpt:
-        "Discover the creative journey of Eva Martinez, a self-taught painter whose bold use of color and texture redefines modern art.",
-    },
-  ]
+interface Article {
+  id: string
+  title: string
+  excerpt: string
+  category: string
+  tags: string[]
+  featured_image?: string
+  published_at?: string
+}
+
+interface SpotlightSectionProps {
+  articles: Article[]
+}
+
+export function SpotlightSection({ articles: allArticles }: SpotlightSectionProps) {
+  const articles = allArticles.slice(1, 3).map(article => ({
+    image: article.featured_image || "/black-and-white-artist.png",
+    date: article.published_at 
+      ? new Date(article.published_at).toLocaleDateString('en-US', { 
+          month: 'long', 
+          day: 'numeric', 
+          year: 'numeric' 
+        })
+      : 'Recently',
+    category: article.category,
+    tags: article.tags.slice(0, 3),
+    title: article.title,
+    excerpt: article.excerpt,
+  }))
+
+  if (articles.length === 0) {
+    return null
+  }
 
   return (
     <section className="bg-background py-20">

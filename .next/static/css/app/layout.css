@@ -1002,6 +1002,9 @@ font-weight: 100 900;
   .justify-center {
     justify-content: center;
   }
+  .justify-end {
+    justify-content: flex-end;
+  }
   .justify-start {
     justify-content: flex-start;
   }
@@ -1170,6 +1173,10 @@ font-weight: 100 900;
     border-style: var(--tw-border-style);
     border-width: 0px;
   }
+  .border-2 {
+    border-style: var(--tw-border-style);
+    border-width: 2px;
+  }
   .border-4 {
     border-style: var(--tw-border-style);
     border-width: 4px;
@@ -1280,6 +1287,9 @@ font-weight: 100 900;
   .border-transparent {
     border-color: transparent;
   }
+  .border-white {
+    border-color: var(--color-white);
+  }
   .border-t-transparent {
     border-top-color: transparent;
   }
@@ -1327,6 +1337,12 @@ font-weight: 100 900;
   }
   .bg-card {
     background-color: var(--card);
+  }
+  .bg-card-foreground\/10 {
+    background-color: var(--card-foreground);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--card-foreground) 10%, transparent);
+    }
   }
   .bg-card-foreground\/90 {
     background-color: var(--card-foreground);
@@ -1647,6 +1663,9 @@ font-weight: 100 900;
   .text-\[11px\] {
     font-size: 11px;
   }
+  .text-\[12px\] {
+    font-size: 12px;
+  }
   .text-\[13px\] {
     font-size: 13px;
   }
@@ -1676,6 +1695,9 @@ font-weight: 100 900;
   }
   .text-\[32px\] {
     font-size: 32px;
+  }
+  .text-\[42px\] {
+    font-size: 42px;
   }
   .text-\[56px\] {
     font-size: 56px;
@@ -2598,6 +2620,13 @@ font-weight: 100 900;
       border-bottom-width: 0px;
     }
   }
+  .hover\:border-accent {
+    &:hover {
+      @media (hover: hover) {
+        border-color: var(--accent);
+      }
+    }
+  }
   .hover\:border-accent\/30 {
     &:hover {
       @media (hover: hover) {
@@ -2648,6 +2677,16 @@ font-weight: 100 900;
         background-color: color-mix(in srgb, oklch(62.3% 0.214 259.815) 10%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
           background-color: color-mix(in oklab, var(--color-blue-500) 10%, transparent);
+        }
+      }
+    }
+  }
+  .hover\:bg-card-foreground\/20 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--card-foreground);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--card-foreground) 20%, transparent);
         }
       }
     }
@@ -4474,6 +4513,11 @@ font-weight: 100 900;
   .md\:max-w-\[420px\] {
     @media (width >= 48rem) {
       max-width: 420px;
+    }
+  }
+  .md\:grid-cols-1 {
+    @media (width >= 48rem) {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
     }
   }
   .md\:grid-cols-2 {

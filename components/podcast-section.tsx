@@ -2,14 +2,27 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Play } from "lucide-react"
 
-export function PodcastSection() {
-  const episodes = [
-    { number: "01", title: "Art in the City: How Modern Sculptur...", duration: "0:54" },
-    { number: "02", title: "Is Film Photography Really Making a...", duration: "1:02" },
-    { number: "03", title: "Behind the Scenes of Galleries: How...", duration: "0:42" },
-    { number: "04", title: "Culture Online: Can Digital Replace t...", duration: "0:42" },
-    { number: "05", title: "Music as Therapy: How Sounds Influ...", duration: "0:56" },
-  ]
+interface Podcast {
+  id: string
+  episode_number: number
+  title: string
+  duration: string
+}
+
+interface PodcastSectionProps {
+  podcasts: Podcast[]
+}
+
+export function PodcastSection({ podcasts }: PodcastSectionProps) {
+  const episodes = podcasts.length > 0 
+    ? podcasts.slice(0, 5).map(p => ({
+        number: String(p.episode_number).padStart(2, '0'),
+        title: p.title.length > 45 ? p.title.substring(0, 45) + '...' : p.title,
+        duration: p.duration
+      }))
+    : [
+        { number: "01", title: "No episodes yet. Create one in Admin!", duration: "0:00" }
+      ]
 
   return (
     <section className="bg-[#e8e8e8] py-20">
