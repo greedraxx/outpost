@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../Downloads/outpost-blog/styles"
+		},
+		{
+			"path": "../../../Downloads/outpost-blog/public"
+		},
+		{
+			"path": "../../../Downloads/outpost-blog/lib"
+		},
+		{
+			"path": "../../../Downloads/outpost-blog/hooks"
+		},
+		{
+			"path": "../../../Downloads/outpost-blog/components"
+		},
+		{
+			"path": "../../../Downloads/outpost-blog/app"
+		}
+	],
+	"settings": {}
+}
