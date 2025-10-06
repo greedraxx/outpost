@@ -1,11 +1,52 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { createClient } from "@/lib/supabase"
 import { BlogHeader } from "@/components/blog-header"
 import { BlogFooter } from "@/components/blog-footer"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { FileText, Mic, Users, TrendingUp, Eye, Heart, MessageSquare, MoreVertical } from "lucide-react"
+import { FileText, Mic, Users, TrendingUp, Eye, Heart, MessageSquare, MoreVertical, LogOut } from "lucide-react"
 
 export default function AdminPage() {
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
+  const [userEmail, setUserEmail] = useState("")
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (!user) {
+        router.push("/login")
+      } else {
+        setUserEmail(user.email || "")
+        setIsLoading(false)
+      }
+    }
+    
+    checkUser()
+  }, [router])
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push("/login")
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    )
+  }
   const stats = [
     { label: "Total Articles", value: "156", icon: FileText, change: "+12 this month" },
     { label: "Podcast Episodes", value: "48", icon: Mic, change: "+4 this month" },
@@ -89,7 +130,10 @@ export default function AdminPage() {
           <div className="flex items-center justify-between mb-12">
             <div>
               <h1 className="text-5xl font-bold mb-2">Admin Dashboard</h1>
-              <p className="text-muted-foreground text-lg">Manage your blog content and monitor performance</p>
+              <p className="text-muted-foreground text-lg">
+                Manage your blog content and monitor performance
+                {userEmail && <span className="ml-2">• {userEmail}</span>}
+              </p>
             </div>
             <div className="flex gap-3">
               <Button
@@ -102,6 +146,14 @@ export default function AdminPage() {
               <Button className="bg-accent hover:bg-accent/90 text-white">
                 <Mic className="w-4 h-4 mr-2" />
                 New Episode
+              </Button>
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                className="border-muted-foreground/20 text-muted-foreground hover:bg-red-500 hover:text-white hover:border-red-500"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
               </Button>
             </div>
           </div>
