@@ -38,10 +38,10 @@ export function NewsletterSection() {
                   </p>
                 </div>
               </div>
-              <button className="flex items-center gap-2 text-sm text-card-foreground hover:text-accent transition-colors">
+              <div className="flex items-center gap-2 text-sm text-card-foreground">
                 <Checkbox checked={weekly} className="pointer-events-none" />
                 <span>Subscribe</span>
-              </button>
+              </div>
             </div>
 
             <div className="border border-card-foreground/20 rounded-xl p-6">
@@ -62,10 +62,10 @@ export function NewsletterSection() {
                   </p>
                 </div>
               </div>
-              <button className="flex items-center gap-2 text-sm text-card-foreground hover:text-accent transition-colors">
+              <div className="flex items-center gap-2 text-sm text-card-foreground">
                 <Checkbox checked={monthly} className="pointer-events-none" />
                 <span>Subscribe</span>
-              </button>
+              </div>
             </div>
           </div>
 
