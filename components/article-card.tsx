@@ -16,7 +16,7 @@ export function ArticleCard({ title, excerpt, category, date, image, tags }: Art
   return (
     <article className="bg-[#e8e8e8] rounded-none overflow-hidden border border-border/10 hover:border-accent/30 transition-all duration-300 group">
       {hasImage && (
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-48 overflow-hidden bg-muted">
           <Image
             src={image}
             alt={title}

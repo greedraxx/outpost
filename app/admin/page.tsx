@@ -8,8 +8,13 @@ import { BlogFooter } from "@/components/blog-footer"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { FileText, Mic, Users, TrendingUp, Eye, Heart, MessageSquare, MoreVertical, LogOut, Plus } from "lucide-react"
-import { useRouter as useNextRouter } from "next/navigation"
+import { FileText, Mic, Users, TrendingUp, Eye, Heart, MessageSquare, MoreVertical, LogOut, Plus, Edit, Trash2 } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default function AdminPage() {
   const router = useRouter()
@@ -93,6 +98,50 @@ export default function AdminPage() {
       day: 'numeric', 
       year: 'numeric' 
     })
+  }
+
+  const handleDeleteArticle = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this article?")) {
+      return
+    }
+
+    try {
+      const supabase = createClient()
+      await supabase.from('articles').delete().eq('id', id)
+      
+      // Reload articles
+      const { data: articlesData } = await supabase
+        .from('articles')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(5)
+      
+      if (articlesData) setArticles(articlesData)
+    } catch (err) {
+      console.error('Failed to delete article:', err)
+    }
+  }
+
+  const handleDeletePodcast = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this podcast?")) {
+      return
+    }
+
+    try {
+      const supabase = createClient()
+      await supabase.from('podcasts').delete().eq('id', id)
+      
+      // Reload podcasts
+      const { data: podcastsData } = await supabase
+        .from('podcasts')
+        .select('*')
+        .order('episode_number', { ascending: false })
+        .limit(3)
+      
+      if (podcastsData) setPodcasts(podcastsData)
+    } catch (err) {
+      console.error('Failed to delete podcast:', err)
+    }
   }
 
   return (
@@ -223,9 +272,26 @@ export default function AdminPage() {
                             {formatDate(article.created_at)}
                           </td>
                           <td className="p-4">
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                              <MoreVertical className="w-4 h-4" />
-                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <MoreVertical className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => router.push(`/admin/articles/${article.id}/edit`)}>
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem 
+                                  onClick={() => handleDeleteArticle(article.id)}
+                                  className="text-red-600 focus:text-red-600"
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </td>
                         </tr>
                       ))
@@ -293,9 +359,26 @@ export default function AdminPage() {
                             {formatDate(podcast.created_at)}
                           </td>
                           <td className="p-4">
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                              <MoreVertical className="w-4 h-4" />
-                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <MoreVertical className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => router.push(`/admin/podcasts/${podcast.id}/edit`)}>
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem 
+                                  onClick={() => handleDeletePodcast(podcast.id)}
+                                  className="text-red-600 focus:text-red-600"
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </td>
                         </tr>
                       ))

@@ -59,12 +59,12 @@ export function FeaturedArticle({ articles }: FeaturedArticleProps) {
             </div>
           </div>
           {hasImage && (
-            <div className="relative h-[450px] md:h-auto">
+            <div className="relative h-[450px] md:h-auto bg-muted">
               <Image 
                 src={featuredArticle.featured_image!} 
                 alt={featuredArticle.title} 
                 fill 
-                className="object-cover" 
+                className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
             </div>
