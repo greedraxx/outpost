@@ -701,6 +701,12 @@ font-weight: 100 900;
   .max-h-\(--radix-select-content-available-height\) {
     max-height: var(--radix-select-content-available-height);
   }
+  .max-h-\[40px\] {
+    max-height: 40px;
+  }
+  .max-h-\[100px\] {
+    max-height: 100px;
+  }
   .max-h-\[300px\] {
     max-height: 300px;
   }

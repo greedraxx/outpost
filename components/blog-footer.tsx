@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 export function BlogFooter() {
   const categories = ["About", "Latest", "Article", "Podcast", "Admin"]
@@ -8,7 +9,15 @@ export function BlogFooter() {
       <div className="max-w-[1200px] mx-auto px-8 py-8">
         <div className="flex items-start justify-between mb-8">
           <div>
-            <h3 className="text-[36px] font-bold mb-2 leading-none text-foreground">OUT POST</h3>
+            <Link href="/" className="block mb-2">
+              <Image
+                src="/logo.png"
+                alt="OUT POST"
+                width={200}
+                height={40}
+                className="h-auto w-auto max-h-[40px]"
+              />
+            </Link>
             <p className="text-[12px] text-muted-foreground max-w-[220px] leading-relaxed">
               Blog about ai, tech, agent.
             </p>

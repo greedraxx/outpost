@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Settings } from "lucide-react"
 
 export function BlogHeader() {
@@ -37,9 +38,16 @@ export function BlogHeader() {
         </div>
 
         <div className="flex items-end gap-8">
-          <h1 className="text-[120px] leading-[0.85] font-bold tracking-tight text-foreground">
-            OUT POST
-          </h1>
+          <Link href="/" className="block">
+            <Image
+              src="/logo.png"
+              alt="OUT POST"
+              width={300}
+              height={60}
+              priority
+              className="h-auto w-auto max-h-[100px]"
+            />
+          </Link>
           <div className="pb-3">
             <p className="text-[15px] text-muted-foreground leading-snug font-light">
               <span className="font-semibold text-foreground">Blog about</span>
