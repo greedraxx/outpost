@@ -1,8 +1,10 @@
 import Image from "next/image"
+import Link from "next/link"
 
 interface Article {
   id: string
   title: string
+  slug: string
   excerpt: string
   category: string
   tags: string[]
@@ -32,44 +34,46 @@ export function FeaturedArticle({ articles }: FeaturedArticleProps) {
   const hasImage = featuredArticle.featured_image && featuredArticle.featured_image.trim() !== ''
 
   return (
-    <section className="bg-background py-12">
+    <section className="bg-white py-16">
       <div className="max-w-[1200px] mx-auto px-8">
-        <div className={`bg-card rounded-none overflow-hidden grid ${hasImage ? 'md:grid-cols-[1fr_1.2fr]' : 'md:grid-cols-1'} gap-0 border border-border/10`}>
-          <div className="p-10 flex flex-col justify-between bg-[#f5f5f5]">
-            <div>
-              <p className="text-[11px] text-card-foreground/50 uppercase tracking-[0.15em] mb-6 font-medium">
-                {publishedDate}
-              </p>
-              <h2 className="text-[32px] font-bold mb-4 text-card-foreground leading-tight">
-                {featuredArticle.title}
-              </h2>
-              <p className="text-[13px] text-card-foreground/60 mb-1 font-medium">
-                {featuredArticle.read_time} min read
-              </p>
-              <p className="text-[14px] text-card-foreground/70 leading-relaxed mb-8">
-                {featuredArticle.excerpt}
-              </p>
+        <Link href={`/article/${featuredArticle.slug}`} className="block">
+          <div className={`bg-card rounded-none overflow-hidden grid ${hasImage ? 'md:grid-cols-[1fr_1.2fr]' : 'md:grid-cols-1'} gap-0 border border-border/10 hover:border-accent/30 transition-all duration-300 cursor-pointer group`}>
+            <div className="p-10 flex flex-col justify-between bg-white">
+              <div>
+                <p className="text-[11px] text-card-foreground/50 uppercase tracking-[0.15em] mb-6 font-medium">
+                  {publishedDate}
+                </p>
+                <h2 className="text-[32px] font-bold mb-4 text-card-foreground leading-tight group-hover:text-accent transition-colors">
+                  {featuredArticle.title}
+                </h2>
+                <p className="text-[13px] text-card-foreground/60 mb-1 font-medium">
+                  {featuredArticle.read_time} min read
+                </p>
+                <p className="text-[14px] text-card-foreground/70 leading-relaxed mb-8">
+                  {featuredArticle.excerpt}
+                </p>
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                {featuredArticle.tags.slice(0, 3).map((tag) => (
+                  <span key={tag} className="px-3 py-1.5 rounded-full bg-card-foreground/90 text-card text-[11px] font-medium">
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
-            <div className="flex gap-2 flex-wrap">
-              {featuredArticle.tags.slice(0, 3).map((tag) => (
-                <span key={tag} className="px-3 py-1.5 rounded-full bg-card-foreground/90 text-card text-[11px] font-medium">
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {hasImage && (
+              <div className="relative h-[450px] md:h-auto bg-muted">
+                <Image 
+                  src={featuredArticle.featured_image!} 
+                  alt={featuredArticle.title} 
+                  fill 
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
+              </div>
+            )}
           </div>
-          {hasImage && (
-            <div className="relative h-[450px] md:h-auto bg-muted">
-              <Image 
-                src={featuredArticle.featured_image!} 
-                alt={featuredArticle.title} 
-                fill 
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
-            </div>
-          )}
-        </div>
+        </Link>
       </div>
     </section>
   )

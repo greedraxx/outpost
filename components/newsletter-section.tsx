@@ -18,7 +18,7 @@ export function NewsletterSection() {
   }
 
   return (
-    <section className="bg-[#e8e8e8] py-20">
+    <section className="bg-white py-16">
       <div className="max-w-[1200px] mx-auto px-8">
         <div className="grid md:grid-cols-2 gap-16">
           <div className="space-y-6">

@@ -37,10 +37,10 @@ export default async function HomePage() {
     <div className="min-h-screen">
       <BlogHeader />
       <FeaturedArticle articles={articles || []} />
-      <PodcastSection podcasts={podcasts || []} />
       <SpotlightSection articles={articles || []} />
-      <NewsletterSection />
       <MustSeeSection articles={articles || []} />
+      <PodcastSection podcasts={podcasts || []} />
+      <NewsletterSection />
       <BlogFooter />
     </div>
   )

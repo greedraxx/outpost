@@ -25,7 +25,7 @@ export function PodcastSection({ podcasts }: PodcastSectionProps) {
       ]
 
   return (
-    <section className="bg-[#e8e8e8] py-20">
+    <section className="bg-background py-16">
       <div className="max-w-[1200px] mx-auto px-8">
         <div className="grid md:grid-cols-[1fr_1.3fr] gap-16 items-center">
           <div className="bg-[#1a1a1a] p-8 rounded-sm">
@@ -60,7 +60,7 @@ export function PodcastSection({ podcasts }: PodcastSectionProps) {
           </div>
 
           <div className="text-left">
-            <h2 className="text-[56px] font-bold text-card-foreground leading-[1.1] mb-10">
+            <h2 className="text-[56px] font-bold text-white leading-[1.1] mb-10">
               Have You
               <br />
               Heard Our
