@@ -1,0 +1,11 @@
+# robots.txt for OUT POST
+
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin
+Disallow: /login
+
+# Sitemap
+Sitemap: https://outpost.vercel.app/sitemap.xml

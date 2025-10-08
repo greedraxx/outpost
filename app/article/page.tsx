@@ -2,6 +2,16 @@ import { BlogHeader } from "@/components/blog-header"
 import { BlogFooter } from "@/components/blog-footer"
 import { ArticleCard } from "@/components/article-card"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Articles",
+  description: "Browse all articles about AI, technology, and intelligent agents. Stay updated with the latest insights and trends.",
+  openGraph: {
+    title: "Articles | OUT POST",
+    description: "Browse all articles about AI, technology, and intelligent agents.",
+  },
+}
 
 export const revalidate = 0
 export const dynamic = 'force-dynamic'

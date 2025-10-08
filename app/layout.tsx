@@ -7,9 +7,53 @@ import "./globals.css"
 import { Suspense } from "react"
 
 export const metadata: Metadata = {
-  title: "OUT POST - AI Technology Blog",
-  description: "Latest AI news, research, and technology trends",
-  generator: "v0.app",
+  title: {
+    default: "OUT POST - AI, Tech & Agent Blog",
+    template: "%s | OUT POST"
+  },
+  description: "Explore the latest insights on AI, technology, and intelligent agents. In-depth articles, podcasts, and analysis.",
+  keywords: ["AI", "Artificial Intelligence", "Technology", "Agent", "Machine Learning", "Tech Blog", "AI News"],
+  authors: [{ name: "OUT POST" }],
+  creator: "OUT POST",
+  publisher: "OUT POST",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://outpost.vercel.app'),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    title: "OUT POST - AI, Tech & Agent Blog",
+    description: "Explore the latest insights on AI, technology, and intelligent agents.",
+    siteName: "OUT POST",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "OUT POST Logo"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "OUT POST - AI, Tech & Agent Blog",
+    description: "Explore the latest insights on AI, technology, and intelligent agents.",
+    images: ["/logo.png"],
+    creator: "@outpost"
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code',
+  },
 }
 
 export default function RootLayout({

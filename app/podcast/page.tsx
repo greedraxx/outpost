@@ -3,6 +3,16 @@ import { BlogFooter } from "@/components/blog-footer"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Play, Clock, Calendar } from "lucide-react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Podcasts",
+  description: "Listen to The Creative Pulse podcast. Discussions about AI, technology, and the future of intelligent agents.",
+  openGraph: {
+    title: "Podcasts | OUT POST",
+    description: "Listen to The Creative Pulse podcast about AI and technology.",
+  },
+}
 
 export default function PodcastPage() {
   const episodes = [

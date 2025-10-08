@@ -1,5 +1,15 @@
 import { BlogHeader } from "@/components/blog-header"
 import { BlogFooter } from "@/components/blog-footer"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description: "Learn about OUT POST - your source for AI, technology, and agent insights. Discover our mission and what we cover.",
+  openGraph: {
+    title: "About OUT POST",
+    description: "Learn about OUT POST - your source for AI, technology, and agent insights.",
+  },
+}
 
 export default function AboutPage() {
   return (

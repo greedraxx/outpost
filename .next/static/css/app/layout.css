@@ -1734,9 +1734,6 @@ font-weight: 100 900;
   .text-\[32px\] {
     font-size: 32px;
   }
-  .text-\[36px\] {
-    font-size: 36px;
-  }
   .text-\[42px\] {
     font-size: 42px;
   }
@@ -1751,13 +1748,6 @@ font-weight: 100 900;
   }
   .text-\[72px\] {
     font-size: 72px;
-  }
-  .text-\[120px\] {
-    font-size: 120px;
-  }
-  .leading-\[0\.85\] {
-    --tw-leading: 0.85;
-    line-height: 0.85;
   }
   .leading-\[1\.1\] {
     --tw-leading: 1.1;

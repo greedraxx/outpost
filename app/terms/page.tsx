@@ -1,5 +1,15 @@
 import { BlogHeader } from "@/components/blog-header"
 import { BlogFooter } from "@/components/blog-footer"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Terms & Conditions",
+  description: "Read the terms and conditions for using OUT POST website and services.",
+  robots: {
+    index: true,
+    follow: false,
+  },
+}
 
 export default function TermsPage() {
   return (

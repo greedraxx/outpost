@@ -1,5 +1,15 @@
 import { BlogHeader } from "@/components/blog-header"
 import { BlogFooter } from "@/components/blog-footer"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Cookie & Privacy Policy",
+  description: "Learn about how OUT POST collects, uses, and protects your personal information and cookies.",
+  robots: {
+    index: true,
+    follow: false,
+  },
+}
 
 export default function PolicyPage() {
   return (
