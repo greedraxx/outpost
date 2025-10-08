@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 interface GoogleAdSenseProps {
   adSlot: string
@@ -15,14 +15,46 @@ export function GoogleAdSense({
   fullWidthResponsive = true,
   style = { display: "block" }
 }: GoogleAdSenseProps) {
+  const [isProduction, setIsProduction] = useState(false)
+
   useEffect(() => {
-    try {
-      // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({})
-    } catch (err) {
-      console.error("AdSense error:", err)
+    // Only load ads in production
+    setIsProduction(process.env.NODE_ENV === 'production')
+    
+    if (process.env.NODE_ENV === 'production') {
+      try {
+        // @ts-ignore
+        (window.adsbygoogle = window.adsbygoogle || []).push({})
+      } catch (err) {
+        // Silently fail in development
+        if (process.env.NODE_ENV !== 'production') {
+          console.log("AdSense: Development mode - ads disabled")
+        }
+      }
     }
   }, [])
+
+  // Show placeholder in development
+  if (!isProduction) {
+    return (
+      <div 
+        style={{ 
+          ...style, 
+          minHeight: '100px',
+          backgroundColor: '#f5f5f5',
+          border: '2px dashed #ccc',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#666',
+          fontSize: '14px',
+          padding: '20px'
+        }}
+      >
+        [AdSense Placeholder - Production Only]
+      </div>
+    )
+  }
 
   return (
     <ins
