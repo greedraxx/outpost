@@ -1,6 +1,7 @@
 import { BlogHeader } from "@/components/blog-header"
 import { BlogFooter } from "@/components/blog-footer"
 import { ArticleCard } from "@/components/article-card"
+import { GoogleAdSense } from "@/components/google-adsense"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
 import type { Metadata } from "next"
 
@@ -51,6 +52,15 @@ export default async function ArticlePage() {
             <p className="text-muted-foreground text-lg">
               Explore our latest insights on AI technology, machine learning, and the future of tech.
             </p>
+          </div>
+
+          {/* Google AdSense */}
+          <div className="mb-12">
+            <GoogleAdSense 
+              adSlot="3340874663"
+              adFormat="auto"
+              fullWidthResponsive={true}
+            />
           </div>
 
           {articles.length === 0 ? (
